@@ -1,0 +1,68 @@
+///Program Sederhana Reverse string menggunakan Stack///
+
+#include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
+#include<limits.h>
+
+//Sebuah Struktur yang merepresentasikan stack//
+struct Stack{
+		int top;
+		unsigned capacity;
+		char *array;
+};
+
+//Sebuah fungsi untuk membuat stack yang diberikan kapasitas// Dibawah ini merupakan Inisialisasi ukuran stack tersebut sebagai nol//
+struct Stack* buatstack(unsigned capacity){
+	struct Stack *stack = (struct Stack*)malloc(sizeof(struct Stack));
+	stack -> capacity = capacity;
+	stack -> top = -1;
+	stack -> array = (char*)malloc(stack -> capacity *sizeof(char));
+	
+	return stack;
+}
+//Tumpukan jadi penuh ketika bagian top sama dengan indeks terakhir//
+int FullStck(struct Stack *stack){
+	return stack -> top == stack -> capacity -1;
+}
+//Tumpukan jadi kosong ketika bagian top sama dengan minus 1 (-1)//
+int EmptyStck(struct Stack *stack){
+	return stack -> top == -1;
+}
+//Dibawah ini adalah fungsi untuk menambah sebuah item ke dalam tumpukan(stack)//
+void push(struct Stack *stack, char item){
+	if(FullStck(stack))
+	return;
+	stack -> array[++stack -> top]= item;
+}
+
+//Dibawah ini adalah fungsi untuk menghapus sebuah item dari tumpukan(stack)//
+char pop(struct Stack *stack){
+	if(EmptyStck(stack))
+	return -1;
+	return stack -> array[stack -> top--];
+}
+
+//Sebuah fungsi yang berbasis Stack untuk reverse string//
+void reverse(char str[]){
+	int n = strlen(str); //untuk membuat kapasitas tumpukan yang sama dengan panjang string // 
+	struct Stack *stack = buatstack(n);
+	
+	//Untuk memasukkan karakter string ke dalam tumpukan(stack)//
+	int i;
+	for(i = 0; i < n; i++)
+	push(stack, str[i]);
+	
+	//Untuk mengeluarkan karakter string dan menaruhnya ke dalam [str]//
+	for(i = 0; i < n; i++)
+	str[i] = pop(stack);
+}
+
+int main(){
+	char str[] = "BinaNusantara";
+	
+	reverse(str);
+	printf("String terbalik nya adalah %s", str);
+	
+	return 0;
+}
